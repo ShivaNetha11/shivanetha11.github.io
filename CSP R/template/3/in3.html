@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder</title>
+    <style>
+        body {
+            
+         <div class="container">
+        <nav class="sidebar">
+            <ul>
+                <li><a href="#personal-info">Personal Info</a></li>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#experience">Experience</a></li>
+                          </ul>
+        </nav>
+        font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color:pink;
+        }
+
+        #resume-container {
+            max-width: 800px;
+            margin: auto;
+            background-color: white;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #photo-input {
+            margin-bottom: 15px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #preview img {
+            max-width: 150px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+
+        #preview h2, #preview p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div id="resume-container">
+    <h1>Resume Builder</h1>
+
+    <label for="photo-input">Upload Photo:</label>
+    <input type="file" id="photo-input" accept="image/*">
+
+    <label for="name">Name:</label>
+    <input type="text" id="name">
+
+    <label for="email">Email:</label>
+    <input type="email" id="email">
+
+    <label for="experience">Experience:</label>
+    <textarea id="experience"></textarea>
+
+    <button onclick="previewResume()">Preview</button>
+    <button onclick="printResume()">Print</button>
+
+    <div id="preview"></div>
+</div>
+
+<script>
+    function previewResume() {
+        var name = document.getElementById('name').value;
+        var email = document.getElementById('email').value;
+        var experience = document.getElementById('experience').value;
+        var photoInput = document.getElementById('photo-input');
+
+        var previewContent = `
+            <img src="${photoInput.files.length > 0 ? URL.createObjectURL(photoInput.files[0]) : 'placeholder.png'}" alt="Photo">
+            <h2>${name}</h2>
+            <p>Email: ${email}</p>
+            <h3>Experience</h3>
+            <p>${experience}</p>
+        `;
+
+        document.getElementById('preview').innerHTML = previewContent;
+    }
+
+    function printResume() {
+        var printWindow = window.open('', '_blank');
+        var name = document.getElementById('name').value;
+        var email = document.getElementById('email').value;
+        var experience = document.getElementById('experience').value;
+        var photoInput = document.getElementById('photo-input');
+
+        var printContent = `
+            <img src="${photoInput.files.length > 0 ? URL.createObjectURL(photoInput.files[0]) : 'placeholder.png'}" alt="Photo">
+            <h2>${name}</h2>
+            <p>Email: ${email}</p>
+            <h3>Experience</h3>
+            <p>${experience}</p>
+        `;
+
+        printWindow.document.open();
+        printWindow.document.write(`
+            <html>
+            <head>
+                <title>Print Resume</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        text-align: center;
+                        margin: 20px;
+                    }
+                    img {
+                        max-width: 150px;
+                        border-radius: 50%;
+                        margin-bottom: 20px;
+                    }
+                    h2, p {
+                        margin: 0;
+                    }
+                </style>
+            </head>
+            <body>
+                ${printContent}
+            </body>
+            </html>
+        `);
+        printWindow.document.close();
+        printWindow.print();
+    }
+</script>
+
+</body>
+</html>
